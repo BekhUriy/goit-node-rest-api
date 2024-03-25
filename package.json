@@ -9,12 +9,9 @@
         "cors": "^2.8.5",
         "express": "^4.19.1",
         "joi": "^17.11.0",
-<<<<<<< Updated upstream
-=======
         "jose": "^5.2.3",
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.2.3",
->>>>>>> Stashed changes
         "morgan": "^1.10.0"
     },
     "devDependencies": {

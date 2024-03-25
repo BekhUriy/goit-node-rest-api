@@ -1,7 +1,4 @@
-<<<<<<< Updated upstream
-=======
 // schemas/contactsSchemas.js
->>>>>>> Stashed changes
 import Joi from "joi";
 
 export const createContactSchema = Joi.object({
