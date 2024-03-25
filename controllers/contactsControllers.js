@@ -1,5 +1,4 @@
 // contactsControllers.js
-
 import Contact from "../models/contactModel";
 
 // Функція отримання контактів з пагінацією та фільтрацією
