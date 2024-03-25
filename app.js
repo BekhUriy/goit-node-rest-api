@@ -3,9 +3,10 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
+import path from "path"; // Імпорт модулю path для роботи з шляхами файлів
 
 import contactsRouter from "./routes/contactsRouter.js";
-import userRouter from "./routes/userRouter.js"; // Шлях до вашого файлу userRouter.js
+import userRouter from "./routes/userRouter.js";
 
 const app = express();
 
@@ -27,8 +28,11 @@ db.once("open", function () {
   console.log("Підключення до бази даних успішне");
 });
 
+// Роздача статичних файлів з папки public
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use("/api/contacts", contactsRouter);
-app.use("/api/users", userRouter); // Доданий маршрут для користувачів
+app.use("/api/users", userRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
