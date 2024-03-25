@@ -6,6 +6,7 @@
         "dev": "nodemon ./app.js"
     },
     "dependencies": {
+        "@sendgrid/mail": "^8.1.1",
         "cors": "^2.8.5",
         "express": "^4.19.1",
         "joi": "^17.11.0",
