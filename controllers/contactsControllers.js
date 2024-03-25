@@ -1,58 +1,25 @@
-import contactsService from "../services/contactsServices.js";
-import { validationResult } from "express-validator";
+import { updateContact } from "../services/contactsService.js";
 
-export const getAllContacts = (req, res) => {
-  const contacts = contactsService.listContacts();
-  res.status(200).json(contacts);
-};
+export const updateContactFavorite = async (req, res) => {
+  try {
+    const { contactId } = req.params;
+    const { favorite } = req.body;
 
-export const getOneContact = (req, res) => {
-  const { id } = req.params;
-  const contact = contactsService.getContactById(id);
-  if (contact) {
-    res.status(200).json(contact);
-  } else {
-    res.status(404).json({ message: "Not found" });
-  }
-};
+    if (typeof favorite !== "boolean") {
+      return res
+        .status(400)
+        .json({ message: "Невірне значення для статусу обрані" });
+    }
 
-export const deleteContact = (req, res) => {
-  const { id } = req.params;
-  const deletedContact = contactsService.removeContact(id);
-  if (deletedContact) {
-    res.status(200).json(deletedContact);
-  } else {
-    res.status(404).json({ message: "Not found" });
-  }
-};
+    const updatedContact = await updateContact(contactId, { favorite });
 
-export const createContact = (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ message: errors.array()[0].msg });
-  }
+    if (!updatedContact) {
+      return res.status(404).json({ message: "Контакт не знайдено" });
+    }
 
-  const { name, email, phone } = req.body;
-  const newContact = contactsService.addContact(name, email, phone);
-  res.status(201).json(newContact);
-};
-
-export const updateContact = (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ message: errors.array()[0].msg });
-  }
-
-  const { id } = req.params;
-  const { name, email, phone } = req.body;
-  const updatedContact = contactsService.updateContact(id, {
-    name,
-    email,
-    phone,
-  });
-  if (updatedContact) {
     res.status(200).json(updatedContact);
-  } else {
-    res.status(404).json({ message: "Not found" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Помилка сервера" });
   }
 };
