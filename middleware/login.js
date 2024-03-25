@@ -31,12 +31,10 @@ export const loginUser = async (req, res) => {
     user.token = token;
     await user.save();
 
-    res
-      .status(200)
-      .json({
-        token,
-        user: { email: user.email, subscription: user.subscription },
-      });
+    res.status(200).json({
+      token,
+      user: { email: user.email, subscription: user.subscription },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Помилка сервера" });

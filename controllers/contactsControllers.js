@@ -22,16 +22,3 @@ export const getContacts = async (req, res) => {
     res.status(500).json({ message: "Помилка сервера" });
   }
 };
-
-// contactsRouter.js
-
-import express from "express";
-import { authMiddleware } from "./authMiddleware";
-import { getContacts } from "./contactsControllers";
-
-const contactsRouter = express.Router();
-
-// Роут для отримання контактів
-contactsRouter.get("/", authMiddleware, getContacts);
-
-export default contactsRouter;
