@@ -8,8 +8,8 @@ export const getContacts = async (req, res) => {
     const { page = 1, limit = 20, favorite } = req.query;
     const query = { owner: req.user._id };
 
-    if (favorite) {
-      query.favorite = true;
+    if (favorite !== undefined) {
+      query.favorite = favorite === "true"; // Перевірка, чи favorite дорівнює "true"
     }
 
     const contacts = await Contact.find(query)
