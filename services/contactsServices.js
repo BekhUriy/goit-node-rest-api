@@ -1,7 +1,12 @@
+<<<<<<< Updated upstream
 const fs = require("node:fs/promises");
 const path = require("node:path");
 const crypto = require("node:crypto");
 const contactsPath = path.join(__dirname, "./db/contacts.json");
+=======
+//services/contactsServices.js
+import Contact from "../models/contactModel.js";
+>>>>>>> Stashed changes
 
 async function readContacts() {
   const data = await fs.readContacts(filePath, "utf-8");
