@@ -1,43 +1,45 @@
-//services/contactsServices.js
+// services/contactsServices.js
 import Contact from "../models/contactModel.js";
 
-export const getAllContacts = async () => {
+export const getAllContacts = async (userId) => {
   try {
-    return await Contact.find({});
+    return await Contact.find({ owner: userId });
   } catch (error) {
     throw new Error("Не вдалося отримати контакти");
   }
 };
 
-export const getOneContact = async (contactId) => {
+export const getOneContact = async (contactId, userId) => {
   try {
-    return await Contact.findById(contactId);
+    return await Contact.findOne({ _id: contactId, owner: userId });
   } catch (error) {
     throw new Error("Не вдалося знайти контакт");
   }
 };
 
-export const deleteContact = async (contactId) => {
+export const deleteContact = async (contactId, userId) => {
   try {
-    return await Contact.findByIdAndDelete(contactId);
+    return await Contact.findOneAndDelete({ _id: contactId, owner: userId });
   } catch (error) {
     throw new Error("Не вдалося видалити контакт");
   }
 };
 
-export const createContact = async (contactData) => {
+export const createContact = async (contactData, userId) => {
   try {
-    return await Contact.create(contactData);
+    return await Contact.create({ ...contactData, owner: userId });
   } catch (error) {
     throw new Error("Не вдалося додати контакт");
   }
 };
 
-export const updateContact = async (contactId, contactData) => {
+export const updateContact = async (contactId, contactData, userId) => {
   try {
-    return await Contact.findByIdAndUpdate(contactId, contactData, {
-      new: true,
-    });
+    return await Contact.findOneAndUpdate(
+      { _id: contactId, owner: userId },
+      contactData,
+      { new: true }
+    );
   } catch (error) {
     throw new Error("Не вдалося оновити контакт");
   }
