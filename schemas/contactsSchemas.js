@@ -1,4 +1,4 @@
-// contactsSchemas.js
+// schemas/contactsSchemas.js
 import Joi from "joi";
 
 export const createContactSchema = Joi.object({

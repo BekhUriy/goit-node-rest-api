@@ -1,9 +1,11 @@
+// app.js
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
 
 import contactsRouter from "./routes/contactsRouter.js";
+import userRouter from "./routes/userRouter.js"; // Шлях до вашого файлу userRouter.js
 
 const app = express();
 
@@ -26,6 +28,7 @@ db.once("open", function () {
 });
 
 app.use("/api/contacts", contactsRouter);
+app.use("/api/users", userRouter); // Доданий маршрут для користувачів
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });

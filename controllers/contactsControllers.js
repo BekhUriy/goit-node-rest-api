@@ -1,23 +1,21 @@
-import { updateContact } from "../services/contactsService.js";
+// contactsControllers.js
+import Contact from "../models/contactModel";
 
-export const updateContactFavorite = async (req, res) => {
+// Функція отримання контактів з пагінацією та фільтрацією
+export const getContacts = async (req, res) => {
   try {
-    const { contactId } = req.params;
-    const { favorite } = req.body;
+    const { page = 1, limit = 20, favorite } = req.query;
+    const query = { owner: req.user._id };
 
-    if (typeof favorite !== "boolean") {
-      return res
-        .status(400)
-        .json({ message: "Невірне значення для статусу обрані" });
+    if (favorite !== undefined) {
+      query.favorite = favorite === "true"; // Перевірка, чи favorite дорівнює "true"
     }
 
-    const updatedContact = await updateContact(contactId, { favorite });
+    const contacts = await Contact.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit);
 
-    if (!updatedContact) {
-      return res.status(404).json({ message: "Контакт не знайдено" });
-    }
-
-    res.status(200).json(updatedContact);
+    res.status(200).json(contacts);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Помилка сервера" });
