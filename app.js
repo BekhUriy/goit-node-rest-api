@@ -3,10 +3,13 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
-import path from "path"; // Імпорт модулю path для роботи з шляхами файлів
+import path from "path";
+import dotenv from "dotenv"; // Додали модуль dotenv для роботи з .env файлом
 
 import contactsRouter from "./routes/contactsRouter.js";
 import userRouter from "./routes/userRouter.js";
+
+dotenv.config(); // Завантажуємо змінні середовища з .env файлу
 
 const app = express();
 
@@ -14,7 +17,8 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb+srv://db:db@cluster0.zx0orle.mongodb.net/", {
+mongoose.connect(process.env.MONGODB_URI, {
+  // Використовуємо URI бази даних з .env файлу
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -28,7 +32,6 @@ db.once("open", function () {
   console.log("Підключення до бази даних успішне");
 });
 
-// Роздача статичних файлів з папки public
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/contacts", contactsRouter);
